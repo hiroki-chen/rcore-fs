@@ -118,14 +118,7 @@ pub trait INode: Any + Sync + Send {
     /// This is used to implement dynamics cast.
     /// Simply return self in the implement of the function.
     fn as_any_ref(&self) -> &dyn Any;
-}
-
-impl dyn INode {
-    /// Downcast the INode to specific struct
-    pub fn downcast_ref<T: INode>(&self) -> Option<&T> {
-        self.as_any_ref().downcast_ref::<T>()
-    }
-
+    
     /// Get all directory entries as a Vec
     pub fn list(&self) -> Result<Vec<String>> {
         let info = self.metadata()?;
@@ -137,6 +130,13 @@ impl dyn INode {
             .take_while(|result| result.is_ok())
             .filter_map(|result| result.ok())
             .collect())
+    }
+}
+
+impl dyn INode {
+    /// Downcast the INode to specific struct
+    pub fn downcast_ref<T: INode>(&self) -> Option<&T> {
+        self.as_any_ref().downcast_ref::<T>()
     }
 
     /// Lookup path from current INode, and do not follow symlinks
