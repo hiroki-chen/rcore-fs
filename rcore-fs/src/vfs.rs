@@ -120,7 +120,7 @@ pub trait INode: Any + Sync + Send {
     fn as_any_ref(&self) -> &dyn Any;
     
     /// Get all directory entries as a Vec
-    pub fn list(&self) -> Result<Vec<String>> {
+    fn list(&self) -> Result<Vec<String>> {
         let info = self.metadata()?;
         if info.type_ != FileType::Dir {
             return Err(FsError::NotDir);
