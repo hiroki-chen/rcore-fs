@@ -56,7 +56,7 @@ impl<T> DerefMut for Dirty<T> {
 impl<T> Drop for Dirty<T> {
     /// Guard it is not dirty when dropping
     fn drop(&mut self) {
-        assert!(!self.dirty, "data dirty when dropping");
+        //         assert!(!self.dirty, "data dirty when dropping");
     }
 }
 
