@@ -9,6 +9,7 @@ use alloc::{
     collections::BTreeMap,
     string::String,
     sync::{Arc, Weak},
+    vec::Vec,
 };
 use core::{any::Any, future::Future, pin::Pin};
 use rcore_fs::vfs::*;
@@ -239,6 +240,22 @@ impl INode for MNode {
 
     fn poll(&self) -> Result<PollStatus> {
         self.inode.poll()
+    }
+
+    fn list(&self) -> Result<Vec<(usize, String)>> {
+        let info = self.metadata()?;
+        if info.type_ != FileType::Dir {
+            return Err(FsError::NotDir);
+        }
+        Ok((0..)
+            .map(|i| self.get_entry_with_metadata(i))
+            .map(|i|
+                self.get_entry_with_metadata(i)
+                .map(|(metadata, name)| (metadata.inode, name))
+            )
+            .take_while(|result| result.is_ok())
+            .filter_map(|result| result.ok())
+            .collect())
     }
 
     /// Poll the events, return a bitmap of events, async version.

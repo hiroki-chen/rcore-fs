@@ -169,6 +169,10 @@ impl INode for LockedINode {
         }
     }
 
+    fn list(&self) -> Result<Vec<(usize, String)>> {
+        unimplemented!()
+    }
+
     fn create2(
         &self,
         name: &str,

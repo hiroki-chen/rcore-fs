@@ -132,6 +132,10 @@ impl INode for HNode {
         Ok(())
     }
 
+    fn list(&self) -> Result<Vec<(usize, String)>> {
+        unimplemented!()
+    }
+
     fn sync_data(&self) -> Result<()> {
         self.open_file()?.as_mut().unwrap().sync_data()?;
         Ok(())

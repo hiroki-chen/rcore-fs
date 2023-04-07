@@ -142,6 +142,10 @@ impl INodeImpl {
 }
 
 impl vfs::INode for INodeImpl {
+    fn list(&self) -> vfs::Result<Vec<(usize, String)>> {
+        unimplemented!()
+    }
+
     fn read_at(&self, offset: usize, buf: &mut [u8]) -> vfs::Result<usize> {
         let type_ = self.disk_inode.read().type_;
         if type_ != FileType::File && type_ != FileType::SymLink {

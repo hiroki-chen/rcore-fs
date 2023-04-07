@@ -5,7 +5,7 @@ extern crate alloc;
 use alloc::{
     collections::BTreeMap,
     string::{String, ToString},
-    sync::{Arc, Weak},
+    sync::{Arc, Weak}, vec::Vec,
 };
 use core::any::Any;
 use rcore_fs::vfs::*;
@@ -222,6 +222,10 @@ impl INode for DevINode {
                 }
             }
         }
+    }
+
+    fn list(&self) -> Result<Vec<(usize, String)>> {
+        unimplemented!()
     }
 
     fn io_control(&self, _cmd: u32, _data: usize) -> Result<usize> {

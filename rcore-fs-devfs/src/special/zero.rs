@@ -27,6 +27,10 @@ impl INode for ZeroINode {
         Ok(buf.len())
     }
 
+    fn list(&self) -> Result<Vec<(usize, String)>> {
+        unimplemented!()
+    }
+
     fn write_at(&self, _offset: usize, buf: &[u8]) -> Result<usize> {
         // write to nothing
         Ok(buf.len())
