@@ -120,7 +120,20 @@ pub trait INode: Any + Sync + Send {
     fn as_any_ref(&self) -> &dyn Any;
     
     /// Get all directory entries as a Vec containing the inode number and its name.
-    fn list(&self) -> Result<Vec<(usize, String)>>;
+    fn list(&self) -> Result<Vec<(usize, String)>> {
+        let info = self.metadata()?;
+        if info.type_ != FileType::Dir {
+            return Err(FsError::NotDir);
+        }
+        Ok((0..)
+            .map(|i|
+                self.get_entry_with_metadata(i)
+                .map(|(metadata, name)| (metadata.inode, name))
+            )
+            .take_while(|result| result.is_ok())
+            .filter_map(|result| result.ok())
+            .collect())
+    }
 }
 
 impl dyn INode {
