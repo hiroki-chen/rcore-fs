@@ -234,6 +234,10 @@ impl INode for MNode {
         self.inode.read_at(offset, buf)
     }
 
+    fn list(&self) -> Result<Vec<(usize, String)>> {
+        self.inode.list()
+    }
+
     fn write_at(&self, offset: usize, buf: &[u8]) -> Result<usize> {
         self.inode.write_at(offset, buf)
     }
